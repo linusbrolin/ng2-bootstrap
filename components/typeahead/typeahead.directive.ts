@@ -104,7 +104,12 @@ export class Typeahead implements OnInit {
   }
 
   private processMatches() {
+
     this._matches = [];
+
+    if (!this.typeahead) {
+      return;
+    }
 
     // If singleWords, break model here to not be doing extra work on each iteration
     let normalizedQuery = (this.typeaheadLatinize ? TypeaheadUtils.latinize(this.cd.model) : this.cd.model).toString().toLowerCase();
@@ -260,6 +265,11 @@ export class Typeahead implements OnInit {
       // Not enough characters typed? Hide the popup.
       this.hide();
     }
+  }
+
+  @HostListener('blur', ['$event.target'])
+  onblur() {
+    this.hide();
   }
 
   public changeModel(value:any) {
